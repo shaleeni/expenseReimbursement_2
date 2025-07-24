@@ -38,13 +38,13 @@ public class AuditController {
  
     // Approve report (additional functionality you might need)
     @PutMapping("/reports/{id}/approve")
-    public ExpenseReport approveReport(@PathVariable Long id, @RequestParam Long auditorId) {
-        return auditService.approveReport(id, auditorId);
+    public ExpenseReport approveReport(@PathVariable Long id) {
+        return auditService.approveReport(id);
     }
  
     // Decline report (additional functionality you might need)
     @PutMapping("/reports/{id}/decline")
-    public ExpenseReport declineReport(@PathVariable Long id, @RequestParam Long auditorId) {
-        return auditService.declineReport(id, auditorId);
+    public ExpenseReport declineReport(@PathVariable Long id) {
+        return auditService.declineReport(id);
     }
 }

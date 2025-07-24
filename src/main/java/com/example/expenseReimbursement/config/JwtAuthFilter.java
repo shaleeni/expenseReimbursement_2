@@ -6,7 +6,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -18,11 +17,16 @@ import java.io.IOException;
 import java.util.Collections;
 
 @Component
-@RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-    private final JwtUtil jwtUtil = new JwtUtil();
-    private final EmployeeRepository employeeRepository = null;
+    private final JwtUtil jwtUtil;
+    private final EmployeeRepository employeeRepository;
+
+    // ✅ Manual constructor for dependency injection
+    public JwtAuthFilter(JwtUtil jwtUtil, EmployeeRepository employeeRepository) {
+        this.jwtUtil = jwtUtil;
+        this.employeeRepository = employeeRepository;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -51,6 +55,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
-        System.out.println("Authorization completed!!");
     }
 }
+ 

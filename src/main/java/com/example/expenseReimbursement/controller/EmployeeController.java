@@ -1,9 +1,11 @@
 package com.example.expenseReimbursement.controller;
 
+import com.example.expenseReimbursement.entity.Employee;
 import com.example.expenseReimbursement.entity.ExpenseItem;
 import com.example.expenseReimbursement.entity.ExpenseReport;
 import com.example.expenseReimbursement.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,10 +20,10 @@ public class EmployeeController {
 
 
     // Create expense report
-
     @PostMapping("/reports")
-    public ExpenseReport createReport(@RequestParam Long employeeId) {
-        return employeeService.createReport(employeeId);
+    public ExpenseReport createReport() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return employeeService.createReportByEmail(email);
     }
 
     // Get employee's reports
@@ -36,7 +38,6 @@ public class EmployeeController {
         return employeeService.getReportById(id);
     }
 
-    
     // Add expense item to report
     @PostMapping("/reports/{id}/items")
     public ExpenseItem addItemToReport(@PathVariable Long id, @RequestBody ExpenseItem item) {
@@ -49,3 +50,4 @@ public class EmployeeController {
         return employeeService.submitReport(id);
     }
 }
+ 

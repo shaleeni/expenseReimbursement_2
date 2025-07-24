@@ -8,6 +8,8 @@ import com.example.expenseReimbursement.repository.ExpenseItemRepository;
 import com.example.expenseReimbursement.repository.ExpenseReportRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -36,8 +38,7 @@ public class EmployeeService {
 
         ExpenseReport report = new ExpenseReport();
         report.setCreatedBy(employee);
-        report.setStatus(ExpenseReport.Status.DRAFT); 
-
+        report.setStatus(ExpenseReport.Status.PENDING);
         report.setTotalAmount(BigDecimal.ZERO);
 
         return expenseReportRepository.save(report);
@@ -55,9 +56,24 @@ public class EmployeeService {
 
     @Transactional
     public ExpenseItem addItemToReport(Long reportId, ExpenseItem item) {
+        // Get logged-in user's email
+        String email = ((User) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal()).getUsername();
+
+        // Fetch logged-in employee
+        Employee employee = employeeRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Logged-in user not found"));
+
+        // Fetch the report
         ExpenseReport report = expenseReportRepository.findById(reportId)
                 .orElseThrow(() -> new RuntimeException("Report not found: " + reportId));
 
+        // Check access
+        if (!report.getCreatedBy().getId().equals(employee.getId())) {
+            throw new RuntimeException("You are not authorized to add items to this report");
+        }
+
+        // Proceed as before
         item.setReport(report);
         ExpenseItem savedItem = expenseItemRepository.save(item);
 
@@ -69,17 +85,39 @@ public class EmployeeService {
         return savedItem;
     }
 
-    
+
     public ExpenseReport submitReport(Long reportId) {
+        // Get logged-in user's email
+        String email = ((User) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal()).getUsername();
+
+        // Fetch logged-in employee
+        Employee employee = employeeRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Logged-in user not found"));
+
+        // Fetch the report
         ExpenseReport report = expenseReportRepository.findById(reportId)
                 .orElseThrow(() -> new RuntimeException("Report not found: " + reportId));
-        
-        if (report.getStatus() != ExpenseReport.Status.DRAFT) {
-            throw new RuntimeException("Only draft reports can be submitted.");
+
+        // Check access
+        if (!report.getCreatedBy().getId().equals(employee.getId())) {
+            throw new RuntimeException("You are not authorized to submit this report");
         }
 
+        // Update status
         report.setStatus(ExpenseReport.Status.PENDING);
-        
+        return expenseReportRepository.save(report);
+    }
+
+
+    public ExpenseReport createReportByEmail(String email) {
+        Employee employee = employeeRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Unauthorized"));
+
+        ExpenseReport report = new ExpenseReport();
+        report.setCreatedBy(employee);
+        report.setStatus(ExpenseReport.Status.PENDING);
+        report.setTotalAmount(BigDecimal.ZERO);
         return expenseReportRepository.save(report);
     }
 }
