@@ -1,19 +1,20 @@
 package com.example.expenseReimbursement.dto;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 public class TransactionResponseDTO {
-
     private Long transactionId;
     private Long reportId;
     private String paidByName;
     private BigDecimal amount;
-    private LocalDateTime paidAt;
     private String fromAccount;
     private String toAccount;
-
+    private String status;       // PAID / PENDING etc.
+    private String approvedBy;   // Auditor name or id
+    private String ifscCode;     // Bank IFSC code
+    private String phoneNumber;  // Phone number of employee
     // Getters and Setters
+
     public Long getTransactionId() {
         return transactionId;
     }
@@ -46,13 +47,6 @@ public class TransactionResponseDTO {
         this.amount = amount;
     }
 
-    public LocalDateTime getPaidAt() {
-        return paidAt;
-    }
-
-    public void setPaidAt(LocalDateTime paidAt) {
-        this.paidAt = paidAt;
-    }
 
     public String getFromAccount() {
         return fromAccount;

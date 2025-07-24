@@ -1,6 +1,5 @@
 package com.example.expenseReimbursement.controller;
 
-import com.example.expenseReimbursement.dto.TransactionRequestDTO;
 import com.example.expenseReimbursement.dto.TransactionResponseDTO;
 import com.example.expenseReimbursement.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +13,15 @@ public class TransactionController {
     @Autowired
     private TransactionService transactionService;
 
-    @PostMapping
-    public ResponseEntity<TransactionResponseDTO> createTransaction(@RequestBody TransactionRequestDTO dto) {
-        TransactionResponseDTO responseDTO = transactionService.createTransaction(dto);
+    @GetMapping("/{id}/report")
+    public ResponseEntity<TransactionResponseDTO> createTransaction(@PathVariable Long id) {
+        TransactionResponseDTO responseDTO = transactionService.createTransaction(id);
         return ResponseEntity.ok(responseDTO);
+    }
+
+//    // ✅ Endpoint to get full transaction report
+    @GetMapping("/fetch/{transactionId}")
+    public ResponseEntity<?> getFormattedTransactionReport(@PathVariable Long transactionId) {
+        return ResponseEntity.ok(transactionService.getFormattedTransactionReport(transactionId));
     }
 }

@@ -29,6 +29,13 @@ public class Transaction {
     private String fromAccount;
 
     private String toAccount;
+    private String status;     // e.g. "PAID" or "PENDING"
+    private String approvedBy; // auditor name/id
+    private String ifscCode;
+    private String phoneNumber;
+
+    // Add getters and setters for these
+
 
     // Default constructor
     public Transaction() {
