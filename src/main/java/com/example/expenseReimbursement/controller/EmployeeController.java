@@ -1,6 +1,5 @@
 package com.example.expenseReimbursement.controller;
 
-import com.example.expenseReimbursement.entity.Employee;
 import com.example.expenseReimbursement.entity.ExpenseItem;
 import com.example.expenseReimbursement.entity.ExpenseReport;
 import com.example.expenseReimbursement.service.EmployeeService;
@@ -37,6 +36,7 @@ public class EmployeeController {
         return employeeService.getReportById(id);
     }
 
+    
     // Add expense item to report
     @PostMapping("/reports/{id}/items")
     public ExpenseItem addItemToReport(@PathVariable Long id, @RequestBody ExpenseItem item) {

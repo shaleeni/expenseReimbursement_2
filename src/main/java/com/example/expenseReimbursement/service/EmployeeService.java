@@ -36,7 +36,8 @@ public class EmployeeService {
 
         ExpenseReport report = new ExpenseReport();
         report.setCreatedBy(employee);
-        report.setStatus(ExpenseReport.Status.PENDING);
+        report.setStatus(ExpenseReport.Status.DRAFT); 
+
         report.setTotalAmount(BigDecimal.ZERO);
 
         return expenseReportRepository.save(report);
@@ -68,10 +69,17 @@ public class EmployeeService {
         return savedItem;
     }
 
+    
     public ExpenseReport submitReport(Long reportId) {
         ExpenseReport report = expenseReportRepository.findById(reportId)
                 .orElseThrow(() -> new RuntimeException("Report not found: " + reportId));
+        
+        if (report.getStatus() != ExpenseReport.Status.DRAFT) {
+            throw new RuntimeException("Only draft reports can be submitted.");
+        }
+
         report.setStatus(ExpenseReport.Status.PENDING);
+        
         return expenseReportRepository.save(report);
     }
 }

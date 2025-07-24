@@ -16,7 +16,9 @@ public class ExpenseReport {
     private Employee createdBy;
 
     @Enumerated(EnumType.STRING)
+    @Column(length = 20) // 👈 Ensures enough space for status names
     private Status status;
+
 
     @ManyToOne
     @JoinColumn(name = "reviewed_by")
@@ -25,8 +27,8 @@ public class ExpenseReport {
     private BigDecimal totalAmount;
 
     public enum Status {
-        PENDING, APPROVED, DECLINED, PAID
-    }
+       DRAFT, PENDING, APPROVED, DECLINED, PAID
+   }
 
     // -------- Constructors --------
     public ExpenseReport() {}
@@ -35,7 +37,7 @@ public class ExpenseReport {
                          Employee reviewedBy, BigDecimal totalAmount) {
         this.reportId = reportId;
         this.createdBy = createdBy;
-        this.status = status;
+        this.status = Status.DRAFT;
         this.reviewedBy = reviewedBy;
         this.totalAmount = totalAmount;
     }
@@ -80,4 +82,9 @@ public class ExpenseReport {
     public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
     }
+
+	public Object getItems() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
