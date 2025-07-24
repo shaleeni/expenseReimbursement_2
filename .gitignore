@@ -1,0 +1,91 @@
+# ========================
+# Java
+# ========================
+*.class
+*.log
+*.war
+*.ear
+*.jar
+*.iml
+
+# ========================
+# Maven
+# ========================
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# ========================
+# Gradle
+# ========================
+/build/
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+
+# ========================
+# IDEs
+# ========================
+
+# IntelliJ
+.idea/
+*.iws
+*.ipr
+*.iml
+out/
+
+# Eclipse
+.project
+.classpath
+.c9/
+.settings/
+bin/
+
+# NetBeans
+/nbproject/private/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# VS Code
+.vscode/
+
+# ========================
+# OS Files
+# ========================
+.DS_Store
+Thumbs.db
+
+# ========================
+# Logs & temp files
+# ========================
+*.log
+logs/
+*.tmp
+*.swp
+
+# ========================
+# Spring Boot specific
+# ========================
+application.properties
+application.yml
+application-*.properties
+application-*.yml
+# include local overrides and secrets
+application-local.properties
+application-local.yml
+
+# ========================
+# Testing
+# ========================
+/test-output/
+/surefire-reports/
+/jacoco.exec
+/coverage/
+
+# ========================
+# Others
+# ========================
+/.env
+.env.*
+
